@@ -32,3 +32,6 @@ COPY --from=builder /opt/padring/ /opt/padring/
 
 ENV PATH $PATH:/opt/padring/bin/
 
+VOLUME /workspace
+WORKDIR /workspace
+
