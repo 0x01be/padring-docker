@@ -5,7 +5,9 @@ RUN apk --no-cache add --virtual padring-build-dependencies \
     build-base \
     cmake \
     doxygen \
-    graphviz
+    graphviz \
+    texlive-full \
+    ghostscript
 
 RUN git clone --depth 1 https://github.com/YosysHQ/padring.git /padring
 
@@ -19,9 +21,11 @@ RUN ninja
 RUN cmake -G Ninja -DBUILD_DOC=yes ..
 RUN cp /padring/build/padring /opt/padring/bin/
 
-WORKDIR /padring/doc/
-RUN doxygen
-RUN cp -R /padring/doc/doc/* /opt/padring/doc/
+WORKDIR /padring/
+RUN doxygen doc/Doxyfile.in
+WORKDIR /padring/doc/latex
+RUN make
+RUN cp -R /padring/doc/* /opt/padring/doc/
 
 FROM alpine
 
