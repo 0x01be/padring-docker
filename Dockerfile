@@ -1,19 +1,21 @@
-FROM 0x01be/ninja as builder
+FROM 0x01be/ninja as build
 
 RUN apk --no-cache add --virtual padring-build-dependencies \
     git \
     build-base \
-    cmake \
+    cmake &&\
+    apk --no-cache add --virtual padring-doc-dependencies \
     doxygen \
     graphviz \
     texlive-full \
     ghostscript
 
-RUN git clone --depth 1 https://github.com/YosysHQ/padring.git /padring
+ENV REVISION=master
+RUN git clone --depth 1 --branch ${REVISION} https://github.com/YosysHQ/padring.git /padring &&\
+    mkdir -p /opt/padring/bin &&\
+    mkdir -p /opt/padring/doc &&\
+    mkdir -p /padring/build
 
-RUN mkdir -p /opt/padring/bin
-RUN mkdir -p /opt/padring/doc
-RUN mkdir -p /padring/build
 WORKDIR /padring/build
 
 RUN cmake -G Ninja ..
@@ -32,10 +34,5 @@ FROM alpine
 RUN apk --no-cache add --virtual padring-runtime-dependencies \
     libstdc++
 
-COPY --from=builder /opt/padring/ /opt/padring/
-
-ENV PATH $PATH:/opt/padring/bin/
-
-VOLUME /workspace
-WORKDIR /workspace
+COPY --from=build /opt/padring/ /opt/padring/
 
