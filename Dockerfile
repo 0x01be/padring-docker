@@ -11,7 +11,7 @@ RUN apk --no-cache add --virtual padring-build-dependencies \
     ghostscript
 
 ENV REVISION=master
-RUN git clone --depth 1 --branch ${REVISION} https://github.com/YosysHQ/padring.git /padring &&\
+RUN git clone --depth 1 --branch ${REVISION} https://github.com/ax3ghazy/padring.git /padring &&\
     mkdir -p /opt/padring/bin &&\
     mkdir -p /opt/padring/doc &&\
     mkdir -p /padring/build
