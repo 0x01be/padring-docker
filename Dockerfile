@@ -36,3 +36,13 @@ RUN apk --no-cache add --virtual padring-runtime-dependencies \
 
 COPY --from=build /opt/padring/ /opt/padring/
 
+RUN adduser -D -u 1000 padring
+
+WORKDIR /workspace
+
+RUN chown padring:padring /workspace
+
+USER padring
+
+ENV PATH $PATH:/opt/padring/bin/
+
