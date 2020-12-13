@@ -25,7 +25,7 @@ WORKDIR /padring/
 RUN doxygen doc/Doxyfile.in
 WORKDIR /padring/doc/latex
 RUN make
-RUN cp -R /padring/doc/* /opt/padring/doc/
+RUN cp -R /padring/doc/* /opt/padring/doc/ &&\
     cp /padring/build/padring /opt/padring/bin/
 
 FROM 0x01be/base
